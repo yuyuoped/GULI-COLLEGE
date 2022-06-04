@@ -1,5 +1,6 @@
 package com.yuyuoped.guli.service.edu.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yuyuoped.guli.service.edu.entity.Teacher;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2022-06-01
  */
 public interface TeacherService extends IService<Teacher> {
+
+    Page<Teacher> queryPage(Integer pageNum, Integer pageSize);
 
 }

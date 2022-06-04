@@ -9,7 +9,8 @@
     </parent>
 
     <modules>
-        <module>common.util</module>
+        <module>common-util</module>
+        <module>service-base</module>
     </modules>
 
     <modelVersion>4.0.0</modelVersion>

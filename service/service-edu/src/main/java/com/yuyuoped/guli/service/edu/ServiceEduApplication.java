@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = "com.yuyuoped.guli")
+@ComponentScan(basePackages = "com.yuyuoped.guli.service")
 public class ServiceEduApplication {
 
     public static void main(String[] args) {
