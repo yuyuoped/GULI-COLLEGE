@@ -2,15 +2,16 @@ package com.yuyuoped.guli.service.edu.controller.admin;
 
 
 import com.yuyuoped.guli.service.base.result.R;
-import com.yuyuoped.guli.service.base.result.ResultCodeEnum;
+import com.yuyuoped.guli.service.edu.params.SearchTeacherCondition;
 import com.yuyuoped.guli.service.edu.entity.Teacher;
 import com.yuyuoped.guli.service.edu.service.TeacherService;
-import com.yuyuoped.guli.service.edu.service.impl.TeacherServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @Api(tags = "讲师管理")
 @RestController
 @RequestMapping("/admin/edu/teacher")
+@CrossOrigin
 public class AdminTeacherController {
 
     @Autowired
@@ -41,6 +43,14 @@ public class AdminTeacherController {
         return R.ok().data("page", teacherService.queryPage(pageNum, pageSize));
     }
 
+    @ApiOperation("带条件分页获取讲师信息")
+    @PostMapping("queryPageWithCondition/{pageNum}/{pageSize}")
+    public R queryPageWithCondition(@ApiParam(value = "页码", required = true) @PathVariable Integer pageNum,
+                                    @ApiParam(value = "每页数据数目", required = true) @PathVariable Integer pageSize,
+                                    @ApiParam(value = "查询条件") @RequestBody SearchTeacherCondition searchConditions) {
+        return R.ok().data("page", teacherService.queryPageWithCondition(pageNum, pageSize, searchConditions));
+    }
+
     @ApiOperation("通过id获取讲师信息")
     @GetMapping("queryById/{id}")
     public R queryById(@ApiParam(value = "讲师id", required = true) @PathVariable String id) {
@@ -51,6 +61,13 @@ public class AdminTeacherController {
     @DeleteMapping ("deleteById/{id}")
     public R deleteById(@ApiParam(value = "讲师id", required = true) @PathVariable String id) {
         teacherService.removeById(id);
+        return R.ok();
+    }
+
+    @ApiOperation("通过ids批量删除讲师信息")
+    @DeleteMapping ("batchDeleteByIds")
+    public R batchDeleteByIds(@ApiParam(value = "批量删除的讲师id", required = true) @RequestBody List<String> ids) {
+        teacherService.batchDeleteByIds(ids);
         return R.ok();
     }
 
