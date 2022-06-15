@@ -12,6 +12,8 @@ target/
 .settings
 .springBeans
 .sts4-cache
+### 含有阿里云accesskey ###
+*.yml
 
 ### IntelliJ IDEA ###
 .idea
