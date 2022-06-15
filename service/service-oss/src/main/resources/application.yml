@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: service-oss
+  servlet:
+      # 设置服务器允许的上传文件的最大大小(默认1mb)
+    multipart:
+      max-request-size: 500MB # 允许一次请求所有的表单项上传文件的总大小
+      max-file-size: 200MB  # 允许一次请求单个表单项上传的文件大小
+server:
+  port: 8220
+
+
+

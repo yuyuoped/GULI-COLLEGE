@@ -14,7 +14,7 @@ target/
 .sts4-cache
 
 ### 含有阿里云accesskey ###
-*.yml
+**/resources/application-local.properties
 
 ### IntelliJ IDEA ###
 .idea
