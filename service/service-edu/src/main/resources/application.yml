@@ -8,6 +8,9 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     password: 123123
+  redis:
+    host: 182.61.56.79
+    port: 6666
   application:
     name: guli-edu
   jackson:
@@ -17,6 +20,14 @@ spring:
     nacos:
       discovery:
         server-addr: http://localhost:8848
+    sentinel:
+      transport:
+        port: 8081 # 跟控制台交流的端口，随意指定一个未使用的端口即可
+        dashboard: localhost:8080 # 指定控制台服务的地址
+        clientIp: localhost  # 当前应用的ip
+      eager: true #取消控制台懒加载，服务启动即可看到sentinel中对当前服务的监控
+      filter:
+        url-patterns: /** #默认拦截规则为 /*
 mybatis-plus:
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
@@ -28,3 +39,6 @@ ribbon:
   ReadTimeout: 5000 #处理请求的超时时间，默认为1秒
   MaxAutoRetries: 0 # 同一实例最大重试次数，不包括首次调用，默认0
   MaxAutoRetriesNextServer: 1
+feign:
+  sentinel:
+    enabled: true
