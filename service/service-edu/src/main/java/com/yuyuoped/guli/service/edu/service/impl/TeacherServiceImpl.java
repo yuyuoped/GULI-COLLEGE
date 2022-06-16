@@ -2,14 +2,18 @@ package com.yuyuoped.guli.service.edu.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.yuyuoped.guli.service.edu.feign.OssClient;
 import com.yuyuoped.guli.service.edu.params.SearchTeacherCondition;
 import com.yuyuoped.guli.service.edu.entity.Teacher;
 import com.yuyuoped.guli.service.edu.mapper.TeacherMapper;
 import com.yuyuoped.guli.service.edu.service.TeacherService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,6 +26,9 @@ import java.util.List;
  */
 @Service
 public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> implements TeacherService {
+
+    @Autowired
+    private OssClient ossClient;
 
     public Page<Teacher> queryPage(Integer pageNum, Integer pageSize) {
         return super.page(new Page<>(pageNum, pageSize));
@@ -56,7 +63,29 @@ public class TeacherServiceImpl extends ServiceImpl<TeacherMapper, Teacher> impl
     }
 
     @Override
+    public boolean removeById(Serializable id) {
+        Teacher teacher = super.getById(id);
+        boolean remove = super.removeById(id);
+
+        if (remove && teacher != null && teacher.getAvatar() != null) {
+            ossClient.delete(teacher.getAvatar());
+        }
+        return true;
+    }
+
+    @Override
     public void batchDeleteByIds(List<String> ids) {
-        super.removeByIds(ids);
+        List<Teacher> teachers = new ArrayList<>();
+        for (String id : ids) {
+            teachers.add(super.getById(id));
+        }
+        boolean remove = super.removeByIds(ids);
+        if (remove && teachers.size() > 0) {
+            teachers.forEach(teacher -> {
+                if (teacher.getAvatar() != null) {
+                    ossClient.delete(teacher.getAvatar());
+                }
+            });
+        }
     }
 }
